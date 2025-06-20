@@ -19,6 +19,7 @@ Feature: Test de API Marvel Character
     And request read ('classpath:data/createCharacter.json')
     When method POST
     Then status 400
+    And match response == read('classpath:data/response/characterNameExist.json')
     And print response
 
   @id:3 @createCharacterEmpty
@@ -64,6 +65,21 @@ Feature: Test de API Marvel Character
     Given path '/api/characters/999'
     And request read ('classpath:data/createCharacter.json')
     When method PUT
+    Then status 404
+    And match response == read('classpath:data/response/characterNotFound.json')
+    And print response
+
+  @id:9 @deleteCharacters
+  Scenario: CA9 - Eliminar personaje
+    Given path '/api/characters/4'
+    When method DELETE
+    Then status 204
+    And print response
+
+  @id:10 @deleteCharactersNotFound
+  Scenario: CA10 - Eliminar personaje no encontrado
+    Given path '/api/characters/999'
+    When method DELETE
     Then status 404
     And match response == read('classpath:data/response/characterNotFound.json')
     And print response
