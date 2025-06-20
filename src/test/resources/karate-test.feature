@@ -44,8 +44,26 @@ Feature: Test de API Marvel Character
     And print response
 
   @id:6 @getCharactersNotFound
-  Scenario: CA5 - Obtener personajes por ID no encontrado
+  Scenario: CA6 - Obtener personajes por ID no encontrado
     Given path '/api/characters/999'
     When method GET
     Then status 404
+    And match response == read('classpath:data/response/characterNotFound.json')
+    And print response
+
+  @id:7 @updateCharacters
+  Scenario: CA7 - Actualizar personaje
+    Given path '/api/characters/1'
+    And request read ('classpath:data/createCharacter.json')
+    When method PUT
+    Then status 200
+    And print response
+
+  @id:8 @updateCharactersNotFound
+  Scenario: CA8 - Actualizar personaje no encontrado
+    Given path '/api/characters/999'
+    And request read ('classpath:data/createCharacter.json')
+    When method PUT
+    Then status 404
+    And match response == read('classpath:data/response/characterNotFound.json')
     And print response
